@@ -1,4 +1,5 @@
 use clap::Parser;
+use fast_qr::convert::{image::ImageBuilder, Builder, Shape};
 use fast_qr::qr::QRBuilder;
 use std::process::ExitCode;
 
@@ -12,15 +13,25 @@ struct Args {
     file: bool,
 }
 
+fn save_to_file(qrcode: &fast_qr::QRCode) {
+    let _img = ImageBuilder::default()
+        .shape(Shape::RoundedSquare)
+        .background_color([255, 255, 255, 255])
+        .fit_width(600)
+        .to_file(&qrcode, "out.png");
+}
+
 fn build_qr_code(args: Args) -> Result<(), String> {
     let input = args.input;
     let Ok(qrcode) = QRBuilder::new(input).build() else {
-        return Err(String::from("ERROR: couldn't build qr code"));
+        return Err(String::from("ERROR: couldn't build QR-code"));
     };
-    let str = qrcode.to_str(); // .print() exists
-    if args.file == false {
-        println!("{}", str);
+    if args.file == true {
+        save_to_file(&qrcode);
+        return Ok(());
     }
+    let string = qrcode.to_str(); // .print() exists
+    println!("{}", string);
     Ok(())
 }
 
