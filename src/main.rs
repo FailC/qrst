@@ -11,7 +11,7 @@ struct Args {
     input: String,
 
     /// Save QRCode to a file
-    #[arg(short, long, default_value = "out.png")]
+    #[arg(short, long)]
     file: Option<Option<String>>,
 }
 
@@ -33,16 +33,15 @@ fn build_qr_code(args: Args) -> Result<(), String> {
         let file_name = file_name.unwrap_or(String::from("out.png"));
         save_to_file(&qrcode, file_name);
         return Ok(());
+    } else {
+        let string = qrcode.to_str();
+        println!("{}", string);
+        Ok(())
     }
-
-    let string = qrcode.to_str(); // .print() exists
-    println!("{}", string);
-    Ok(())
 }
 
 fn main() {
     let args = Args::parse();
-    // let input = args.input.clone();
 
     match build_qr_code(args) {
         Ok(_) => ExitCode::SUCCESS,
