@@ -322,7 +322,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "qrust"
+name = "qrst"
 version = "0.1.0"
 dependencies = [
  "clap",
