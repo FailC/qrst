@@ -21,7 +21,7 @@ struct Args {
 
 fn save_to_svg(qrcode: &fast_qr::QRCode, file_name: String) {
     let _svg = SvgBuilder::default()
-        .shape(Shape::RoundedSquare)
+        .shape(Shape::Square)
         .to_file(&qrcode, &file_name);
 }
 
