@@ -1,6 +1,6 @@
 use clap::Parser;
 use fast_qr::convert::{image::ImageBuilder, svg::SvgBuilder, Builder, Shape};
-use fast_qr::qr::QRBuilder;
+use fast_qr::qr::{QRBuilder, QRCodeError};
 use std::process::ExitCode;
 
 #[derive(Parser, Debug)]
@@ -33,10 +33,11 @@ fn save_to_png(qrcode: &fast_qr::QRCode, file_name: String) {
         .to_file(&qrcode, &file_name);
 }
 
-fn build_qr_code(args: Args) -> Result<(), String> {
+fn build_qr_code(args: Args) -> Result<(), QRCodeError> {
     let input = args.input;
-    let Ok(qrcode) = QRBuilder::new(input).build() else {
-        return Err(String::from("ERROR: couldn't build QR-code"));
+    let qrcode = match QRBuilder::new(input).build() {
+        Ok(v) => v,
+        Err(e) => return Err(e),
     };
 
     if args.file.is_some() || args.svg.is_some() {
@@ -62,7 +63,7 @@ fn main() {
     match build_qr_code(args) {
         Ok(_) => ExitCode::SUCCESS,
         Err(err) => {
-            eprintln!("{}", err);
+            eprintln!("ERROR: {}", err);
             ExitCode::FAILURE
         }
     };
