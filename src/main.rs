@@ -15,19 +15,19 @@ struct Args {
     #[arg(short, long, value_name = "NAME")]
     png: Option<Option<String>>,
 
-    /// provide resolution for PNG
-    #[arg(short, long, default_value_t = 600)]
-    resolution: u32,
-
     /// Save as SVG
     #[arg(short, long, value_name = "NAME")]
     svg: Option<Option<String>>,
+
+    /// provide custom resolution for PNG
+    #[arg(short, long, default_value_t = 600)]
+    resolution: u32,
 }
 
 fn save_to_svg(qrcode: &fast_qr::QRCode, file_name: String) {
     let _svg = SvgBuilder::default()
         .shape(Shape::Square)
-        .to_file(&qrcode, &file_name);
+        .to_file(qrcode, &file_name);
 }
 
 fn save_to_png(qrcode: &fast_qr::QRCode, file_name: String, size: u32) {
@@ -35,7 +35,7 @@ fn save_to_png(qrcode: &fast_qr::QRCode, file_name: String, size: u32) {
         .shape(Shape::Square)
         .background_color([255, 255, 255, 255])
         .fit_width(size)
-        .to_file(&qrcode, &file_name);
+        .to_file(qrcode, &file_name);
 }
 
 fn build_qr_code(args: Args) -> Result<(), Box<dyn Error>> {
@@ -50,8 +50,8 @@ fn build_qr_code(args: Args) -> Result<(), Box<dyn Error>> {
             let file_name = file_name.unwrap_or(String::from("out.png"));
             let size = args.resolution;
             if size > 10000 {
-                // limiting resolution to prevent high ram usage
-                return Err("resolution too high".into());
+                // limiting resolution to prevent high ram usage while building image
+                return Err("resolution too high: max_value=10000".into());
             }
             save_to_png(&qrcode, file_name, size);
         }
