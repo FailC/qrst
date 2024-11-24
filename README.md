@@ -20,7 +20,7 @@ cargo install --path .
 ```
 if you only want to run it:
 ```
-cargo run -- -i github
+cargo run -- -i github.com
 ```
 (basically just clap + fast_qr https://crates.io/crates/fast_qr)
 i wrote this 80 line program to avoid having to use some qr-code generation website and for an excuse to write more Rust. Did i mention that this very important project is written in Rust??
