@@ -15,7 +15,7 @@ __Installation from source:__
 
 ```bash
 git clone https://github.com/FailC/qrst.git
-mv qrst
+cd qrst
 cargo install --path .
 ```
 if you only want to run it:
