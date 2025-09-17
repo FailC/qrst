@@ -8,7 +8,6 @@ use std::process::ExitCode;
 #[command(version, about, long_about = None)]
 struct Args {
     /// Create QR-Code from String
-    #[arg(short, long)]
     input: String,
 
     /// Save as PNG
