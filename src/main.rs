@@ -62,7 +62,7 @@ fn build_qr_code(args: Args) -> Result<(), Box<dyn Error>> {
         return Ok(());
     }
     let string = qrcode.to_str();
-    println!("{}", string);
+    println!("{string}");
     Ok(())
 }
 
@@ -72,7 +72,7 @@ fn main() {
     match build_qr_code(args) {
         Ok(_) => ExitCode::SUCCESS,
         Err(err) => {
-            eprintln!("ERROR: {}", err);
+            eprintln!("ERROR: {err}");
             ExitCode::FAILURE
         }
     };
